@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitud</title>
+</head>
+<body>
+  <button id="boton">Cargar Sitio</button>
+  <div id="response"></div>
+  <script>  
+    function ajax(){
+      const http = new XMLHttpRequest();
+      const url = 'pagina.html'; 
+      http.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+          const responseDiv = document.getElementById('response');
+          responseDiv.innerHTML = this.responseText;
+
+          const scripts = responseDiv.getElementsByTagName('script');
+          for(let i = 0; i < scripts.length; i++) {
+            const script = document.createElement('script');
+            script.text = scripts[i].text;
+            document.head.appendChild(script).parentNode.removeChild(script);
+          }
+        }
+      };
+      http.open('GET', url);
+      http.send();
+    } 
+    
+    document.getElementById('boton').addEventListener("click", function(){
+      ajax();
+    });
+  </script>
+</body> 
+</html>
